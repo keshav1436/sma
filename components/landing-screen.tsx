@@ -1,0 +1,72 @@
+'use client'
+
+import { useState, type FormEvent } from 'react'
+import { Radar, Search, Zap } from 'lucide-react'
+
+type LandingScreenProps = {
+  onAnalyze: (query: string) => void
+}
+
+export function LandingScreen({ onAnalyze }: LandingScreenProps) {
+  const [value, setValue] = useState('')
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    const trimmed = value.trim()
+    if (trimmed) onAnalyze(trimmed)
+  }
+
+  return (
+    <div className="relative flex min-h-screen flex-col items-center justify-center px-4">
+      <div className="flex w-full max-w-xl flex-col items-center text-center">
+        <span className="flex h-16 w-16 items-center justify-center rounded-2xl border border-primary/30 bg-primary/10 text-primary">
+          <Radar className="h-8 w-8" aria-hidden="true" />
+        </span>
+
+        <h1 className="mt-6 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+          SENTINEL<span className="text-primary">-AI</span>
+        </h1>
+        <p className="mt-3 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
+          Social Intelligence Command Center
+        </p>
+        <p className="mt-4 max-w-md text-pretty text-sm leading-relaxed text-muted-foreground">
+          Analyze real-time sentiment, audience demographics, and influence networks for any topic
+          across the social web.
+        </p>
+
+        <form onSubmit={handleSubmit} className="mt-10 w-full">
+          <div className="group relative">
+            <Search
+              className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground transition-colors group-focus-within:text-primary"
+              aria-hidden="true"
+            />
+            <label htmlFor="topic-search" className="sr-only">
+              Enter topic, hashtag, or keyword to analyze
+            </label>
+            <input
+              id="topic-search"
+              type="text"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="Enter topic, hashtag, or keyword to analyze (e.g., #TechPolicy2026)"
+              className="w-full rounded-xl border border-border bg-card py-4 pl-12 pr-4 text-sm text-foreground shadow-lg outline-none transition-all placeholder:text-muted-foreground focus:border-primary/50 focus:ring-4 focus:ring-primary/10"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={!value.trim()}
+            className="group relative mt-5 inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-primary px-6 py-4 text-sm font-semibold text-primary-foreground shadow-[0_0_24px_-4px_oklch(0.78_0.15_195_/_0.6)] transition-all hover:shadow-[0_0_36px_-2px_oklch(0.78_0.15_195_/_0.8)] hover:brightness-110 focus:outline-none focus:ring-4 focus:ring-primary/30 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+          >
+            <Zap className="h-4 w-4" aria-hidden="true" />
+            Run SENTINEL-AI Engine
+          </button>
+        </form>
+
+        <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground/70">
+          Prototype · Mocked data engine
+        </p>
+      </div>
+    </div>
+  )
+}
