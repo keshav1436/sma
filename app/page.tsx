@@ -56,17 +56,20 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="hidden items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 sm:flex">
               <Activity className="h-3.5 w-3.5 text-chart-2" aria-hidden="true" />
               <span className="font-mono text-[11px] text-muted-foreground">
                 Streaming · {new Date().getUTCFullYear()}
               </span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-chart-2" aria-hidden="true" />
-              <span className="font-mono text-[11px] uppercase tracking-widest text-chart-2">
-                Online
+            <div className="flex items-center gap-2 rounded-full border border-chart-2/30 bg-chart-2/10 px-3 py-1.5">
+              <span className="relative flex h-2 w-2" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-chart-2 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-chart-2" />
+              </span>
+              <span className="font-mono text-[10px] font-medium uppercase tracking-[0.15em] text-chart-2">
+                Live Data Feed: Mocked for Prototype
               </span>
             </div>
           </div>
@@ -86,7 +89,7 @@ export default function Page() {
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
               {cards.map((card) => (
                 <DashboardCard
                   key={card.title}

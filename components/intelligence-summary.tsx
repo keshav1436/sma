@@ -56,19 +56,19 @@ export function IntelligenceSummary() {
         </h2>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-5">
         {items.map(({ icon: Icon, label, value, detail, tone = 'default' }) => (
           <div
             key={label}
-            className="group relative overflow-hidden rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/40"
+            className="group relative overflow-hidden rounded-xl border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-card/80"
           >
             <div
-              className="pointer-events-none absolute -right-6 -top-6 h-16 w-16 rounded-full bg-primary/5 blur-xl transition-opacity group-hover:opacity-100"
+              className="pointer-events-none absolute -right-6 -top-6 h-16 w-16 rounded-full bg-primary/5 opacity-60 blur-xl transition-opacity duration-300 group-hover:opacity-100"
               aria-hidden="true"
             />
             <div className="flex items-center gap-2">
               <span
-                className={`flex h-8 w-8 items-center justify-center rounded-lg border ${
+                className={`flex h-8 w-8 items-center justify-center rounded-lg border transition-transform duration-300 group-hover:scale-105 ${
                   tone === 'negative'
                     ? 'border-destructive/30 bg-destructive/10 text-destructive'
                     : tone === 'positive'
@@ -78,14 +78,23 @@ export function IntelligenceSummary() {
               >
                 <Icon className="h-4 w-4" aria-hidden="true" />
               </span>
-              <p className="font-mono text-[10px] font-medium uppercase tracking-widest text-muted-foreground">
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
                 {label}
               </p>
             </div>
-            <p className="mt-3 truncate text-lg font-semibold text-card-foreground" title={value}>
+            <p
+              className={`mt-4 truncate text-xl font-bold tracking-tight ${
+                tone === 'negative'
+                  ? 'text-destructive'
+                  : tone === 'positive'
+                    ? 'text-chart-2'
+                    : 'text-foreground'
+              }`}
+              title={value}
+            >
               {value}
             </p>
-            <p className="mt-0.5 text-xs text-muted-foreground">{detail}</p>
+            <p className="mt-1 text-xs font-medium text-muted-foreground">{detail}</p>
           </div>
         ))}
       </div>

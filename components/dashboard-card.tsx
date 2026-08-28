@@ -12,11 +12,11 @@ export function DashboardCard({ title, subtitle, icon: Icon, children }: Dashboa
   return (
     <section
       aria-label={title}
-      className="flex min-h-[20rem] flex-col rounded-2xl border border-border bg-card"
+      className="group flex min-h-[20rem] flex-col rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_0_0_1px_oklch(0.78_0.15_195_/_0.1),0_12px_32px_-12px_oklch(0.78_0.15_195_/_0.25)]"
     >
       <header className="flex items-center justify-between border-b border-border px-5 py-4">
         <div className="flex items-center gap-3">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary">
+          <span className="flex h-9 w-9 items-center justify-center rounded-lg border border-primary/30 bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
             <Icon className="h-4 w-4" aria-hidden="true" />
           </span>
           <div>
