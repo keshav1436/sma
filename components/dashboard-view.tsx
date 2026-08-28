@@ -1,35 +1,21 @@
-import { Activity, LineChart, PieChart, Hash, Network, Radar } from 'lucide-react'
+'use client'
+
+import { useState } from 'react'
+import { Activity, LayoutGrid, LineChart, PieChart, Network, Radar, Hash } from 'lucide-react'
 import { IntelligenceSummary } from '@/components/intelligence-summary'
 import { DashboardCard } from '@/components/dashboard-card'
 import { SentimentTimelineChart } from '@/components/sentiment-timeline-chart'
 import { DemographicsChart } from '@/components/demographics-chart'
 import { TrendingKeywords } from '@/components/trending-keywords'
+import { InfluenceNetwork } from '@/components/influence-network'
 
-const cards = [
-  {
-    title: 'Sentiment Timeline',
-    subtitle: 'Hourly · 08:00 – 20:00',
-    icon: LineChart,
-    content: <SentimentTimelineChart />,
-  },
-  {
-    title: 'Audience Demographics',
-    subtitle: 'Age & region breakdown',
-    icon: PieChart,
-    content: <DemographicsChart />,
-  },
-  {
-    title: 'Trending Keywords',
-    subtitle: 'Top volume signals',
-    icon: Hash,
-    content: <TrendingKeywords />,
-  },
-  {
-    title: 'Influence Network',
-    subtitle: 'Node & edge graph',
-    icon: Network,
-    content: null,
-  },
+type TabId = 'overview' | 'sentiment' | 'demographics' | 'network'
+
+const tabs: { id: TabId; label: string; icon: typeof LayoutGrid }[] = [
+  { id: 'overview', label: 'Overview', icon: LayoutGrid },
+  { id: 'sentiment', label: 'Sentiment', icon: LineChart },
+  { id: 'demographics', label: 'Demographics', icon: PieChart },
+  { id: 'network', label: 'Network Flow', icon: Network },
 ]
 
 type DashboardViewProps = {
@@ -38,9 +24,11 @@ type DashboardViewProps = {
 }
 
 export function DashboardView({ query, onReset }: DashboardViewProps) {
+  const [activeTab, setActiveTab] = useState<TabId>('overview')
+
   return (
     <div className="relative mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <header className="mb-8 flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
+      <header className="mb-6 flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-primary/30 bg-primary/10 text-primary">
             <Radar className="h-5 w-5" aria-hidden="true" />
@@ -75,41 +63,68 @@ export function DashboardView({ query, onReset }: DashboardViewProps) {
         </div>
       </header>
 
-      <main className="flex flex-col gap-8">
-        <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3">
-          <Hash className="h-4 w-4 text-primary" aria-hidden="true" />
-          <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-            Active Query
-          </span>
-          <span className="text-sm font-semibold text-foreground">{query}</span>
-        </div>
+      <div className="mb-6 flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3">
+        <Hash className="h-4 w-4 text-primary" aria-hidden="true" />
+        <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+          Active Query
+        </span>
+        <span className="text-sm font-semibold text-foreground">{query}</span>
+      </div>
 
-        <IntelligenceSummary />
-
-        <section aria-labelledby="analytics-heading">
-          <div className="mb-4 flex items-center gap-3">
-            <span className="h-4 w-1 rounded-full bg-primary" aria-hidden="true" />
-            <h2
-              id="analytics-heading"
-              className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground"
+      {/* Tab navigation */}
+      <nav
+        aria-label="Dashboard sections"
+        className="mb-8 flex flex-wrap gap-1 rounded-xl border border-border bg-card p-1"
+      >
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab.id
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              aria-current={isActive ? 'page' : undefined}
+              className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+                isActive
+                  ? 'bg-primary/15 text-primary shadow-[inset_0_0_0_1px_var(--primary)]'
+                  : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+              }`}
             >
-              Analytics Modules
-            </h2>
-          </div>
+              <tab.icon className="h-4 w-4" aria-hidden="true" />
+              <span>{tab.label}</span>
+            </button>
+          )
+        })}
+      </nav>
 
+      <main key={activeTab} className="flex animate-in flex-col gap-6 fade-in duration-500">
+        {activeTab === 'overview' && <IntelligenceSummary />}
+
+        {activeTab === 'sentiment' && (
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            {cards.map((card) => (
-              <DashboardCard
-                key={card.title}
-                title={card.title}
-                subtitle={card.subtitle}
-                icon={card.icon}
-              >
-                {card.content}
-              </DashboardCard>
-            ))}
+            <DashboardCard title="Sentiment Timeline" subtitle="Hourly · 08:00 – 20:00" icon={LineChart}>
+              <SentimentTimelineChart />
+            </DashboardCard>
+            <DashboardCard title="Trending Keywords" subtitle="Top volume signals" icon={Hash}>
+              <TrendingKeywords />
+            </DashboardCard>
           </div>
-        </section>
+        )}
+
+        {activeTab === 'demographics' && (
+          <DashboardCard
+            title="Audience Demographics"
+            subtitle="Age & region breakdown"
+            icon={PieChart}
+          >
+            <DemographicsChart />
+          </DashboardCard>
+        )}
+
+        {activeTab === 'network' && (
+          <DashboardCard title="Influence Network" subtitle="Node & edge topology" icon={Network}>
+            <InfluenceNetwork />
+          </DashboardCard>
+        )}
       </main>
     </div>
   )
