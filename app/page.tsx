@@ -1,12 +1,35 @@
 import { Activity, LineChart, PieChart, Hash, Network, Radar } from 'lucide-react'
 import { IntelligenceSummary } from '@/components/intelligence-summary'
 import { DashboardCard } from '@/components/dashboard-card'
+import { SentimentTimelineChart } from '@/components/sentiment-timeline-chart'
+import { DemographicsChart } from '@/components/demographics-chart'
+import { TrendingKeywords } from '@/components/trending-keywords'
 
 const cards = [
-  { title: 'Sentiment Timeline', subtitle: 'Hourly · 08:00 – 20:00', icon: LineChart },
-  { title: 'Audience Demographics', subtitle: 'Age & region breakdown', icon: PieChart },
-  { title: 'Trending Keywords', subtitle: 'Top volume signals', icon: Hash },
-  { title: 'Influence Network', subtitle: 'Node & edge graph', icon: Network },
+  {
+    title: 'Sentiment Timeline',
+    subtitle: 'Hourly · 08:00 – 20:00',
+    icon: LineChart,
+    content: <SentimentTimelineChart />,
+  },
+  {
+    title: 'Audience Demographics',
+    subtitle: 'Age & region breakdown',
+    icon: PieChart,
+    content: <DemographicsChart />,
+  },
+  {
+    title: 'Trending Keywords',
+    subtitle: 'Top volume signals',
+    icon: Hash,
+    content: <TrendingKeywords />,
+  },
+  {
+    title: 'Influence Network',
+    subtitle: 'Node & edge graph',
+    icon: Network,
+    content: null,
+  },
 ]
 
 export default function Page() {
@@ -70,7 +93,9 @@ export default function Page() {
                   title={card.title}
                   subtitle={card.subtitle}
                   icon={card.icon}
-                />
+                >
+                  {card.content}
+                </DashboardCard>
               ))}
             </div>
           </section>

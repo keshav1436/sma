@@ -1,12 +1,14 @@
 import type { LucideIcon } from 'lucide-react'
+import type { ReactNode } from 'react'
 
 type DashboardCardProps = {
   title: string
   subtitle: string
   icon: LucideIcon
+  children?: ReactNode
 }
 
-export function DashboardCard({ title, subtitle, icon: Icon }: DashboardCardProps) {
+export function DashboardCard({ title, subtitle, icon: Icon, children }: DashboardCardProps) {
   return (
     <section
       aria-label={title}
@@ -30,17 +32,21 @@ export function DashboardCard({ title, subtitle, icon: Icon }: DashboardCardProp
         </span>
       </header>
 
-      <div className="flex flex-1 items-center justify-center p-5">
-        <div className="flex flex-col items-center gap-2 text-center">
-          <div
-            className="h-24 w-full max-w-[16rem] rounded-lg border border-dashed border-border"
-            aria-hidden="true"
-          />
-          <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
-            Awaiting data stream
-          </p>
+      {children ? (
+        <div className="flex flex-1 flex-col p-5">{children}</div>
+      ) : (
+        <div className="flex flex-1 items-center justify-center p-5">
+          <div className="flex flex-col items-center gap-2 text-center">
+            <div
+              className="h-24 w-full max-w-[16rem] rounded-lg border border-dashed border-border"
+              aria-hidden="true"
+            />
+            <p className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+              Awaiting data stream
+            </p>
+          </div>
         </div>
-      </div>
+      )}
     </section>
   )
 }
