@@ -2,10 +2,24 @@
 
 import { useState } from 'react'
 import { LandingScreen } from '@/components/landing-screen'
+import { ProcessingTerminal } from '@/components/processing-terminal'
 import { DashboardView } from '@/components/dashboard-view'
 
+type Stage = 'landing' | 'processing' | 'dashboard'
+
 export default function Page() {
+  const [stage, setStage] = useState<Stage>('landing')
   const [query, setQuery] = useState<string | null>(null)
+
+  function handleAnalyze(topic: string) {
+    setQuery(topic)
+    setStage('processing')
+  }
+
+  function handleReset() {
+    setQuery(null)
+    setStage('landing')
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -14,10 +28,14 @@ export default function Page() {
         aria-hidden="true"
       />
 
-      {query === null ? (
-        <LandingScreen onAnalyze={setQuery} />
-      ) : (
-        <DashboardView query={query} onReset={() => setQuery(null)} />
+      {stage === 'landing' && <LandingScreen onAnalyze={handleAnalyze} />}
+
+      {stage === 'processing' && query !== null && (
+        <ProcessingTerminal query={query} onComplete={() => setStage('dashboard')} />
+      )}
+
+      {stage === 'dashboard' && query !== null && (
+        <DashboardView query={query} onReset={handleReset} />
       )}
     </div>
   )
