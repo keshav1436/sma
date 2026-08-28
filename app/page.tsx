@@ -1,16 +1,81 @@
-export default function Home() {
+import { Activity, LineChart, PieChart, Hash, Network, Radar } from 'lucide-react'
+import { IntelligenceSummary } from '@/components/intelligence-summary'
+import { DashboardCard } from '@/components/dashboard-card'
+
+const cards = [
+  { title: 'Sentiment Timeline', subtitle: 'Hourly · 08:00 – 20:00', icon: LineChart },
+  { title: 'Audience Demographics', subtitle: 'Age & region breakdown', icon: PieChart },
+  { title: 'Trending Keywords', subtitle: 'Top volume signals', icon: Hash },
+  { title: 'Influence Network', subtitle: 'Node & edge graph', icon: Network },
+]
+
+export default function Page() {
   return (
-    <div className="flex min-h-screen items-center justify-center font-sans">
-      <main className="flex w-full max-w-3xl flex-col items-center gap-8 px-6 py-16 text-center sm:items-start sm:text-left">
-        <div className="flex flex-col gap-4">
-          <h1 className="text-4xl font-bold tracking-tight">
-            social media analytics
-          </h1>
-          <p className="max-w-md text-lg text-muted-foreground">
-            To get started, send a prompt or modify this page directly.
-          </p>
-        </div>
-      </main>
+    <div className="min-h-screen bg-background">
+      <div
+        className="pointer-events-none fixed inset-0 opacity-[0.4] [background-image:radial-gradient(oklch(0.78_0.15_195_/_0.06)_1px,transparent_1px)] [background-size:32px_32px]"
+        aria-hidden="true"
+      />
+
+      <div className="relative mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <header className="mb-8 flex flex-col gap-4 border-b border-border pb-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-primary/30 bg-primary/10 text-primary">
+              <Radar className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <div>
+              <h1 className="text-xl font-bold tracking-tight text-foreground">
+                SENTINEL<span className="text-primary">-AI</span>
+              </h1>
+              <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+                Social Intelligence Command Center
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="hidden items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 sm:flex">
+              <Activity className="h-3.5 w-3.5 text-chart-2" aria-hidden="true" />
+              <span className="font-mono text-[11px] text-muted-foreground">
+                Streaming · {new Date().getUTCFullYear()}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-chart-2" aria-hidden="true" />
+              <span className="font-mono text-[11px] uppercase tracking-widest text-chart-2">
+                Online
+              </span>
+            </div>
+          </div>
+        </header>
+
+        <main className="flex flex-col gap-8">
+          <IntelligenceSummary />
+
+          <section aria-labelledby="analytics-heading">
+            <div className="mb-4 flex items-center gap-3">
+              <span className="h-4 w-1 rounded-full bg-primary" aria-hidden="true" />
+              <h2
+                id="analytics-heading"
+                className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground"
+              >
+                Analytics Modules
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+              {cards.map((card) => (
+                <DashboardCard
+                  key={card.title}
+                  title={card.title}
+                  subtitle={card.subtitle}
+                  icon={card.icon}
+                />
+              ))}
+            </div>
+          </section>
+        </main>
+      </div>
     </div>
-  );
+  )
 }
