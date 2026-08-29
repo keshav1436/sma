@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import { Radar, Search, Zap } from 'lucide-react'
+import { Radar, Search, TrendingUp, Zap } from 'lucide-react'
+import { trendingSearches } from '@/lib/mock-data'
 
 type LandingScreenProps = {
   onAnalyze: (query: string) => void
@@ -14,6 +15,12 @@ export function LandingScreen({ onAnalyze }: LandingScreenProps) {
     e.preventDefault()
     const trimmed = value.trim()
     if (trimmed) onAnalyze(trimmed)
+  }
+
+  function handleTrendingClick(tag: string) {
+    // Fill the input for visual feedback, then immediately run the engine.
+    setValue(tag)
+    onAnalyze(tag)
   }
 
   return (
@@ -53,10 +60,32 @@ export function LandingScreen({ onAnalyze }: LandingScreenProps) {
             />
           </div>
 
+          <div className="mt-6">
+            <p className="flex items-center justify-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              <TrendingUp className="h-3 w-3 text-primary" aria-hidden="true" />
+              Trending Searches
+            </p>
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+              {trendingSearches.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() => handleTrendingClick(tag)}
+                  className="group inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-1.5 font-mono text-xs font-medium text-muted-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:bg-primary/10 hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+                >
+                  <span className="text-primary/60 transition-colors group-hover:text-primary">
+                    {'>'}
+                  </span>
+                  {tag}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <button
             type="submit"
             disabled={!value.trim()}
-            className="group relative mt-5 inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-primary px-6 py-4 text-sm font-semibold text-primary-foreground shadow-[0_0_24px_-4px_oklch(0.78_0.15_195_/_0.6)] transition-all hover:shadow-[0_0_36px_-2px_oklch(0.78_0.15_195_/_0.8)] hover:brightness-110 focus:outline-none focus:ring-4 focus:ring-primary/30 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+            className="group relative mt-6 inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-xl bg-primary px-6 py-4 text-sm font-semibold text-primary-foreground shadow-[0_0_24px_-4px_oklch(0.78_0.15_195_/_0.6)] transition-all hover:shadow-[0_0_36px_-2px_oklch(0.78_0.15_195_/_0.8)] hover:brightness-110 focus:outline-none focus:ring-4 focus:ring-primary/30 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
           >
             <Zap className="h-4 w-4" aria-hidden="true" />
             Run SENTINEL-AI Engine

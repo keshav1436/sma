@@ -1,6 +1,6 @@
 'use client'
 
-import { networkNodes, networkEdges } from '@/lib/mock-data'
+import type { NetworkNode, NetworkEdge } from '@/lib/mock-data'
 
 // Fixed radial layout: strongest influencer (highest score) in center-ish,
 // others arranged around a circle for a clean topology view.
@@ -22,7 +22,12 @@ function formatFollowers(n: number) {
   return n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M` : `${Math.round(n / 1000)}K`
 }
 
-export function InfluenceNetwork() {
+type InfluenceNetworkProps = {
+  nodes: NetworkNode[]
+  edges: NetworkEdge[]
+}
+
+export function InfluenceNetwork({ nodes: networkNodes, edges: networkEdges }: InfluenceNetworkProps) {
   const maxWeight = Math.max(...networkEdges.map((e) => e.weight))
 
   return (

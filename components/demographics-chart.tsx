@@ -7,7 +7,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from '@/components/ui/chart'
-import { ageGroups, topRegions } from '@/lib/mock-data'
+import type { AgeGroup, Region } from '@/lib/mock-data'
 
 const ageChartConfig = {
   '18-25': { label: '18 – 25', color: 'var(--chart-1)' },
@@ -15,18 +15,23 @@ const ageChartConfig = {
   '36-50': { label: '36 – 50', color: 'var(--chart-2)' },
 } satisfies ChartConfig
 
-const ageData = ageGroups.map((item) => ({
-  ...item,
-  fill: `var(--color-${item.group})`,
-}))
-
 const regionChartConfig = {
   percentage: { label: 'Share of audience', color: 'var(--chart-1)' },
 } satisfies ChartConfig
 
 const regionColors = ['var(--chart-1)', 'var(--chart-4)', 'var(--chart-2)']
 
-export function DemographicsChart() {
+type DemographicsChartProps = {
+  ageGroups: AgeGroup[]
+  topRegions: Region[]
+}
+
+export function DemographicsChart({ ageGroups, topRegions }: DemographicsChartProps) {
+  const ageData = ageGroups.map((item) => ({
+    ...item,
+    fill: `var(--color-${item.group})`,
+  }))
+
   return (
     <div className="flex flex-1 flex-col gap-4">
       <div>

@@ -8,6 +8,7 @@ import { SentimentTimelineChart } from '@/components/sentiment-timeline-chart'
 import { DemographicsChart } from '@/components/demographics-chart'
 import { TrendingKeywords } from '@/components/trending-keywords'
 import { InfluenceNetwork } from '@/components/influence-network'
+import { getDataset } from '@/lib/mock-data'
 
 type TabId = 'overview' | 'sentiment' | 'demographics' | 'network'
 
@@ -25,6 +26,8 @@ type DashboardViewProps = {
 
 export function DashboardView({ query, onReset }: DashboardViewProps) {
   const [activeTab, setActiveTab] = useState<TabId>('overview')
+  // Resolve the topic-specific dataset (or the fallback for custom searches).
+  const dataset = getDataset(query)
 
   return (
     <div className="relative mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
@@ -97,15 +100,15 @@ export function DashboardView({ query, onReset }: DashboardViewProps) {
       </nav>
 
       <main key={activeTab} className="flex animate-in flex-col gap-6 fade-in duration-500">
-        {activeTab === 'overview' && <IntelligenceSummary />}
+        {activeTab === 'overview' && <IntelligenceSummary summary={dataset.summary} />}
 
         {activeTab === 'sentiment' && (
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
             <DashboardCard title="Sentiment Timeline" subtitle="Hourly · 08:00 – 20:00" icon={LineChart}>
-              <SentimentTimelineChart />
+              <SentimentTimelineChart data={dataset.sentimentTimeline} />
             </DashboardCard>
             <DashboardCard title="Trending Keywords" subtitle="Top volume signals" icon={Hash}>
-              <TrendingKeywords />
+              <TrendingKeywords keywords={dataset.trendingKeywords} />
             </DashboardCard>
           </div>
         )}
@@ -116,13 +119,13 @@ export function DashboardView({ query, onReset }: DashboardViewProps) {
             subtitle="Age & region breakdown"
             icon={PieChart}
           >
-            <DemographicsChart />
+            <DemographicsChart ageGroups={dataset.ageGroups} topRegions={dataset.topRegions} />
           </DashboardCard>
         )}
 
         {activeTab === 'network' && (
           <DashboardCard title="Influence Network" subtitle="Node & edge topology" icon={Network}>
-            <InfluenceNetwork />
+            <InfluenceNetwork nodes={dataset.networkNodes} edges={dataset.networkEdges} />
           </DashboardCard>
         )}
       </main>

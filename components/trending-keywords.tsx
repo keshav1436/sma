@@ -1,13 +1,17 @@
-import { trendingKeywords } from '@/lib/mock-data'
+import type { Keyword } from '@/lib/mock-data'
 
 const barColors = ['var(--chart-1)', 'var(--chart-4)', 'var(--chart-2)', 'var(--chart-1)', 'var(--chart-4)']
 
-export function TrendingKeywords() {
-  const maxVolume = Math.max(...trendingKeywords.map((item) => item.volume))
+type TrendingKeywordsProps = {
+  keywords: Keyword[]
+}
+
+export function TrendingKeywords({ keywords }: TrendingKeywordsProps) {
+  const maxVolume = Math.max(...keywords.map((item) => item.volume))
 
   return (
     <ul className="flex w-full flex-col gap-4">
-      {trendingKeywords.map((item, index) => {
+      {keywords.map((item, index) => {
         const widthPercent = (item.volume / maxVolume) * 100
         const color = barColors[index % barColors.length]
 
