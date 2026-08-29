@@ -1,4 +1,5 @@
 import { Flame, TrendingUp, Frown, Users, Share2, type LucideIcon } from 'lucide-react'
+import type { TopicSummary } from '@/lib/mock-data'
 
 type SummaryItem = {
   icon: LucideIcon
@@ -8,42 +9,46 @@ type SummaryItem = {
   tone?: 'default' | 'negative' | 'positive'
 }
 
-const items: SummaryItem[] = [
-  {
-    icon: Flame,
-    label: 'Rising Topic',
-    value: 'Tech Policy Change 2026',
-    detail: '184,320 posts tracked',
-  },
-  {
-    icon: TrendingUp,
-    label: 'Growth',
-    value: '+342%',
-    detail: 'vs. 24h baseline',
-    tone: 'positive',
-  },
-  {
-    icon: Frown,
-    label: 'Overall Sentiment',
-    value: 'Negative',
-    detail: '58% of conversation',
-    tone: 'negative',
-  },
-  {
-    icon: Users,
-    label: 'Major Audience',
-    value: '26 – 35',
-    detail: '41% of participants',
-  },
-  {
-    icon: Share2,
-    label: 'Influence Flow',
-    value: '@siliconvalleyinsider',
-    detail: 'Score 97 · 1.12M reach',
-  },
-]
+type IntelligenceSummaryProps = {
+  summary: TopicSummary
+}
 
-export function IntelligenceSummary() {
+export function IntelligenceSummary({ summary }: IntelligenceSummaryProps) {
+  const items: SummaryItem[] = [
+    {
+      icon: Flame,
+      label: 'Rising Topic',
+      value: summary.event,
+      detail: `${summary.totalPosts.toLocaleString()} posts tracked`,
+    },
+    {
+      icon: TrendingUp,
+      label: 'Growth',
+      value: summary.growth,
+      detail: 'vs. 24h baseline',
+      tone: 'positive',
+    },
+    {
+      icon: Frown,
+      label: 'Overall Sentiment',
+      value: summary.sentimentLabel,
+      detail: summary.sentimentDetail,
+      tone: summary.sentimentTone,
+    },
+    {
+      icon: Users,
+      label: 'Major Audience',
+      value: summary.majorAudience,
+      detail: summary.majorAudienceDetail,
+    },
+    {
+      icon: Share2,
+      label: 'Influence Flow',
+      value: summary.topInfluencer,
+      detail: summary.topInfluencerDetail,
+    },
+  ]
+
   return (
     <section aria-labelledby="summary-heading">
       <div className="mb-4 flex items-center gap-3">

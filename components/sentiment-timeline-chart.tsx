@@ -9,7 +9,7 @@ import {
   ChartLegendContent,
   type ChartConfig,
 } from '@/components/ui/chart'
-import { sentimentTimeline } from '@/lib/mock-data'
+import type { SentimentPoint } from '@/lib/mock-data'
 
 const chartConfig = {
   positive: { label: 'Positive', color: 'var(--chart-2)' },
@@ -17,10 +17,14 @@ const chartConfig = {
   negative: { label: 'Negative', color: 'var(--chart-4)' },
 } satisfies ChartConfig
 
-export function SentimentTimelineChart() {
+type SentimentTimelineChartProps = {
+  data: SentimentPoint[]
+}
+
+export function SentimentTimelineChart({ data }: SentimentTimelineChartProps) {
   return (
     <ChartContainer config={chartConfig} className="aspect-auto h-64 w-full">
-      <AreaChart data={sentimentTimeline} margin={{ left: 0, right: 8, top: 8, bottom: 0 }}>
+      <AreaChart data={data} margin={{ left: 0, right: 8, top: 8, bottom: 0 }}>
         <defs>
           <linearGradient id="fillPositive" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor="var(--color-positive)" stopOpacity={0.5} />
