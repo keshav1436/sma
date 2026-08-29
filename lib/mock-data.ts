@@ -289,6 +289,30 @@ export const trendingSearches = [
   '#CyberFraudAlert',
 ]
 
+// Mocked "live API" pool used by the search autocomplete/auto-suggest.
+export const searchSuggestions = [
+  'Student Protest',
+  'Pro-Government Rally',
+  'Election Debate',
+  'Tech Policy 2026',
+  'Programmer Layoffs',
+  'Cyber Fraud Alert',
+  'Protest in Capital',
+  'Climate March',
+  'Vaccine Mandate',
+  'AI Regulation Bill',
+  'Fuel Price Hike',
+  'University Strike',
+  'Data Privacy Leak',
+  'Crypto Crackdown',
+  'Farmers Rally',
+  'Healthcare Reform',
+  'Border Security Debate',
+  'Housing Crisis',
+  'Minimum Wage Push',
+  'Press Freedom Alert',
+]
+
 function normalizeKey(query: string) {
   return query.trim().toLowerCase().replace(/[#\s_-]/g, '')
 }
